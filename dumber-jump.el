@@ -46,7 +46,7 @@
 (require 'cl-lib)
 
 (defgroup dumber-jump nil
-  "Easily jump to project function and variable definitions"
+  "Easily jump to project function and variable definitions."
   :group 'tools
   :group 'convenience)
 
@@ -64,7 +64,7 @@
 
 (defcustom dumber-jump-fallback-regex
   "\\bJJJ\\j"
-  "When dumber-jump-fallback-search is t use this regex.  Defaults to boundary search of symbol under point."
+  "When `dumber-jump-fallback-search' is t use this regex.  Defaults to boundary search of symbol under point."
   :group 'dumber-jump
   :type 'string)
 
@@ -94,7 +94,7 @@
 
 (defcustom dumber-jump-rg-search-args
   "--pcre2"
-  "Appends the passed arguments to the rg search function. Default: \"--pcre2\""
+  "Appends the passed arguments to the rg search function. Default: \"--pcre2\"."
   :group 'dumber-jump
   :type 'string)
 
@@ -1622,7 +1622,7 @@ If `nil` always show list of more than 1 match."
     dumber-jump--rg-installed?))
 
 (defun dumber-jump-message (str &rest args)
-  "Log message STR with ARGS to the *Messages* buffer if not using dumber-jump-quiet."
+  "Log message STR with ARGS to the *Messages* buffer if not using `dumber-jump-quiet'."
   (when (not dumber-jump-quiet)
     (apply 'message str args))
   nil)
@@ -1678,8 +1678,8 @@ If `nil` always show list of more than 1 match."
      dumber-jump-default-project))))
 
 (defun dumber-jump-get-config (dir)
-  "If a project denoter is in DIR then return it, otherwise
-nil. However, if DIR contains a `.dumbjumpignore' it returns nil
+  "If a project denoter is in DIR then return it, otherwise nil.
+However, if DIR contains a `.dumbjumpignore' it returns nil
 to keep looking for another root."
   (if (file-exists-p (expand-file-name ".dumbjumpignore" dir))
       nil
@@ -1785,7 +1785,7 @@ to keep looking for another root."
     (thing-at-point 'symbol t)))
 
 (defun dumber-jump--get-symbol-start ()
-  "Get the start of symbol at point"
+  "Get the start of symbol at point."
   (- (if (region-active-p)
          (region-beginning)
        (car (bounds-of-thing-at-point 'symbol)))
@@ -1801,7 +1801,7 @@ to keep looking for another root."
     (--map (plist-get it :language) found)))
 
 (defun dumber-jump-fetch-results (cur-file proj-root lang _config &optional prompt)
-  "Return a list of results based on current file context and calling grep/ag.
+  "Return a list of results based on current file context and calling rg.
 CUR-FILE is the path of the current buffer.
 PROJ-ROOT is that file's root project directory.
 LANG is a string programming language with CONFIG a property list
@@ -1908,8 +1908,7 @@ of project configuration."
       nil)))
 
 (defun dumber-jump-filter-no-start-comments (results lang)
-  "Filter out RESULTS with a :context that starts with a comment
-given the LANG of the current file."
+  "Filter out RESULTS with a :context that start with a comment given the LANG of the current file."
   (let ((comment (dumber-jump-get-comment-by-language lang)))
     (if comment
         (-concat
@@ -2033,9 +2032,7 @@ Ffrom the ROOT project CONFIG-FILE."
     matched))
 
 (defun dumber-jump-shell-command-switch ()
-  "Yields the shell command switch to use for the current
-  `shell-file-name' in order to not load the shell profile/RC for
-  speeding up things."
+  "Yields the shell command switch to use for the current `shell-file-name' in order to not load the shell profile/RC for speeding up things."
   (let ((base-name (downcase (file-name-base shell-file-name))))
     (cond
      ((or (string-equal "zsh" base-name)
@@ -2052,7 +2049,7 @@ Ffrom the ROOT project CONFIG-FILE."
 ;; TODO: rename dumber-jump-run-definition-command
 (defun dumber-jump-run-command
     (look-for proj regexes lang exclude-args cur-file line-num parse-fn generate-fn)
-  "Run the command based on the needle LOOK-FOR in the directory TOSEARCH"
+  "Run the command based on the needle LOOK-FOR in the directory TOSEARCH."
   (let* ((proj-root (if (file-remote-p proj)
                         (directory-file-name
                          (tramp-file-name-localname (tramp-dissect-file-name proj)))
